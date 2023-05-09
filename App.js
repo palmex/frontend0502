@@ -7,9 +7,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.header}>
 
-        <Text style={{fontSize:35}}>
+        <Text style={{fontSize:35, color: "#887444"}}>
         Welcome to Module 3!
         </Text>
         <Text style={{fontSize:15}}>
@@ -25,14 +25,19 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f',
+    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'start',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f',
+  header: {
+    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    marginTop: 25,
+    
+    borderColor: "#243783",
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 5,
+    justifyContent: 'center',
   },
 });
