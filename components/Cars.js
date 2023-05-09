@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import React from "react";
 
 export default class Cars extends React.Component {
@@ -12,12 +12,17 @@ export default class Cars extends React.Component {
     }
 
     // js logic
+    doSomething = () =>{
+        this.setState({message: "Button Clicked"})
+    }
 
     // render
     render(){
         return(
             <View style={styles.container}>
+                <Text>{this.props.title}</Text>
                 <Text>{this.state.message}</Text>
+                <Button title="Click Me!" onPress={this.doSomething}></Button>
             </View>
         )
     }
