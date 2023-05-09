@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Cars from "./components/Cars";
 
 export default function App() {
 
@@ -8,15 +9,15 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-
         <Text style={{fontSize:35, color: "#887444"}}>
         Welcome to Module 3!
         </Text>
         <Text style={{fontSize:15}}>
         This is our React Native (Web) Frontend
-        </Text>
-        
+        </Text>  
       </View>
+      <Cars></Cars>
+
       <StatusBar style="auto" />
     </View>
   );
