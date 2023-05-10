@@ -15,57 +15,64 @@ export default class Cars extends React.Component {
            model: "",
            year: "",
            odometer: "",
-           data: []
+           carId: "",
+           data: [],
+           submitted: false,
+           isEditing: false,
         }
     }
     
+    // js logic
     async componentDidMount(){
         const response = await fetchCars()
+        this.setState({submitted: false})
         console.log("all cars body", response)
         this.setState({data: response})
     }
 
-    // js logic
-    doSomething = (car) => {
-        console.log("Car clicked: ", car)
+    selectCar = (car) => {
+        this.setState({carId: car.car_id})
+        this.setState({make: car.make})
+        this.setState({isEditing: true})
+        this.setState({model: car.model})
+        this.setState({year: car.year})
+        this.setState({odometer: car.odometer})
     }
 
-    submitCar = () =>{
-        console.log(this.state.make,this.state.model, this.state.year, this.state.odometer )
+    saveCar = () => {
+       
     }
 
-    toggle = () => {
-        this.setState({buttonClicks: this.state.buttonClicks + 1})
-        if (this.state.buttonTitle == "ON"){
-            this.setState({buttonTitle: "OFF"})
-        } else {
-            this.setState({buttonTitle: "ON"})
+    deleteCar = () => {
+       
+    }
+
+    submitCar = async () =>{
+        const response = await submitCar(this.state.make,this.state.model, this.state.year, this.state.odometer )
+        if (response){
+            this.setState({submitted: true})
         }
-        console.log("Button has been toggled ", this.state.buttonClicks, "times")
     }
-
-
     
     // render
     render(){
-        // console.log(this.state.make)
         return(
             <View style={styles.container}>
                 <Text>{this.props.title}</Text>
-                {/* <ScrollView 
-                    style={{maxHeight: "50%", padding: 15, margin: 10}}
+                <ScrollView 
+                    style={{maxHeight: "30%", padding: 15, margin: 10}}
                     showsVerticalScrollIndicator={true}
                     >
                 {this.state.data.map((car) => 
                     <Pressable 
                         key={car.car_id} 
                         style={styles.pressable}
-                        onPress={() => this.doSomething(car.car_id)}
+                        onPress={() => this.selectCar(car)}
                         >
-                        <Text style={{color:"white"}}>{car.make}</Text>
+                        <Text style={{color:"white"}}>{car.make} {car.model} {car.year}</Text>
                     </Pressable>
                 )}
-                </ScrollView> */}
+                </ScrollView>
                 <Text style={{fontSize:20, color: "#887444"}}>
                     Car Form
                 </Text>
@@ -74,35 +81,56 @@ export default class Cars extends React.Component {
                     <TextInput 
                         style={styles.formInput}
                         onChangeText={(e)=>this.setState({make: e})}
+                        defaultValue={this.state.make}
                     />
                     <Text style={styles.formText}>Model</Text>
                     <TextInput 
                         style={styles.formInput}
                         onChangeText={(e)=>this.setState({model: e})}
+                        defaultValue={this.state.model}
                     />
                     <Text style={styles.formText}>Year</Text>
                     <TextInput 
                         style={styles.formInput}
                         onChangeText={(e)=>this.setState({year: e})}
+                        defaultValue={this.state.year}
                     />
                     <Text style={styles.formText}>Odometer</Text>
                     <TextInput 
                         style={styles.formInput}
                         onChangeText={(e)=>this.setState({odometer: e})}
+                        defaultValue={this.state.odometer}
                     />
+                    {(this.state.isEditing)?(
+                        <View>
+                        <Pressable style={styles.submit}
+                        onPress={this.saveCar}>
+                        <Text>Save</Text>
+                    </Pressable>
                     <Pressable style={styles.submit}
+                        onPress={this.deleteCar}>
+                        <Text>Delete</Text>
+                    </Pressable>
+                    </View>
+
+                    ):(
+                        <Pressable style={styles.submit}
                         onPress={this.submitCar}>
                         <Text>Submit</Text>
-                    </Pressable>
+                        </Pressable>
+                    )}
+                    
+                    {(this.state.submitted)?(<Text style={{color:"green"}}>Success!</Text>):(<></>)}
                 </View>
             </View>
         )
     }
-
 }
 
 // when: async
-
+// how:
+// server down... no response at all?
+// status codes
 async function fetchCars(){
     // HTTP Request (Type, URI:PORT/ENDPOINT, Headers [cors,admin])
 
@@ -134,9 +162,48 @@ async function fetchCars(){
     })
 }
 
-// how:
-// server down... no response at all?
-// status codes
+async function submitCar(make, model, year, odometer){
+    // HTTP Request (Type, URI:PORT/ENDPOINT, Headers [cors,admin])
+
+    let headers = {
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000/*',
+        'Accept': "application/json",
+        'admin': "true"
+    }
+
+    let reqBody = {
+        "make":make,
+        "model":model,
+        "year":year,
+        "odometer":odometer
+    }
+
+    
+
+    return fetch("http://localhost:3000/cars/new",{
+        method: "POST",
+        withCredentials: true,
+        headers: headers,
+        body: JSON.stringify(reqBody)
+    }).then((response)=>{
+        console.log('Cars New Response:', response)
+        if(response.ok){
+            return response.json()
+        } else {
+            var error = new Error('Error-' + response.status + ":" + response.statusText)
+            error.response = response
+            throw error
+        }
+    }, error=>{
+        var errmess = new Error(error.message)
+        throw errmess
+    })
+}
+
+
 
 // styling
 const styles = StyleSheet.create({
