@@ -10,8 +10,14 @@ export default class Cars extends React.Component {
            message: "I am the car class",
            buttonTitle: "ON",
            buttonClicks: 0,
-           data: ["car1", "car2", "car3", "car4", "car5","car6"]
+           data: []
         }
+    }
+    
+    async componentDidMount(){
+        const response = await fetchCars()
+        console.log("all cars body", response)
+        this.setState({data: response})
     }
 
     // js logic
@@ -47,20 +53,56 @@ export default class Cars extends React.Component {
                     >
                 {this.state.data.map((car) => 
                     <Pressable 
-                        key={car} 
+                        key={car.car_id} 
                         style={styles.pressable}
-                        onPress={() => this.doSomething(car)}
+                        onPress={() => this.doSomething(car.car_id)}
                         >
-                        <Text style={{color:"white"}}>{car}</Text>
+                        <Text style={{color:"white"}}>{car.make}</Text>
                     </Pressable>
                 )}
                 </ScrollView>
-
             </View>
         )
     }
 
 }
+
+// when: async
+
+async function fetchCars(){
+    // HTTP Request (Type, URI:PORT/ENDPOINT, Headers [cors,admin])
+
+    let headers = {
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000/*',
+        'Accept': "application/json",
+        'admin': "true"
+    }
+
+    return fetch("http://localhost:3000/cars/all",{
+        method: "GET",
+        withCredentials: true,
+        headers: headers
+    }).then((response)=>{
+        console.log('Cars All Response:', response)
+        if(response.ok){
+            return response.json()
+        } else {
+            var error = new Error('Error-' + response.status + ":" + response.statusText)
+            error.response = response
+            throw error
+        }
+    }, error=>{
+        var errmess = new Error(error.message)
+        throw errmess
+    })
+}
+
+// how:
+// server down... no response at all?
+// status codes
 
 // styling
 const styles = StyleSheet.create({
