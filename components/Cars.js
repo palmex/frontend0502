@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Button, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button,TextInput,
+     Pressable, ScrollView } from 'react-native';
 import React from "react";
 
 export default class Cars extends React.Component {
@@ -10,6 +11,10 @@ export default class Cars extends React.Component {
            message: "I am the car class",
            buttonTitle: "ON",
            buttonClicks: 0,
+           make: "",
+           model: "",
+           year: "",
+           odometer: "",
            data: []
         }
     }
@@ -36,17 +41,13 @@ export default class Cars extends React.Component {
     }
 
 
-
+    
     // render
     render(){
+        console.log(this.state.make)
         return(
             <View style={styles.container}>
                 <Text>{this.props.title}</Text>
-                <Text>{this.state.message}</Text>
-                {/* <Button title="Click Me!" onPress={this.doSomething}></Button> */}
-                <Button title={this.state.buttonTitle} onPress={this.toggle}></Button>
-                <Text>This button has been clicked {this.state.buttonClicks} times</Text>
-                
                 <ScrollView 
                     style={{maxHeight: "50%", padding: 15, margin: 10}}
                     showsVerticalScrollIndicator={true}
@@ -61,6 +62,16 @@ export default class Cars extends React.Component {
                     </Pressable>
                 )}
                 </ScrollView>
+                <Text style={{fontSize:20, color: "#887444"}}>
+                    Car Form
+                </Text>
+                <View style={styles.form}>
+                    <Text style={styles.formText}>Make</Text>
+                    <TextInput 
+                        style={styles.formInput}
+                        onChangeText={(e)=>this.setState({make: e})}
+                    />
+                </View>
             </View>
         )
     }
@@ -125,5 +136,23 @@ const styles = StyleSheet.create({
         minHeight: 45,
         justifyContent: "center",
         padding: 5
+    }, 
+    form: {
+        backgroundColor: "#243783",
+        borderRadius: 10,
+        minHeight: "35%",
+        minWidth: "25%",
+        padding: 10,
+    }, 
+    formText:{
+        color:"white",
+        fontSize: 18,
+        marginBottom: 5
+    },
+    formInput:{
+        backgroundColor: "white",
+        borderRadius: 3,
+        minHeight: 15,
+        marginBottom: 10,
     }
 })
