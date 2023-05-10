@@ -16,8 +16,8 @@ export default function App() {
         This is our React Native (Web) Frontend
         </Text>  
       </View>
-      <Cars title="Cars 1"></Cars>
-      <Cars title="Cars 2"></Cars>
+      <Cars title="Cars Component"></Cars>
+
 
       <StatusBar style="auto" />
     </View>

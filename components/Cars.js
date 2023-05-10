@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Pressable, ScrollView } from 'react-native';
 import React from "react";
 
 export default class Cars extends React.Component {
@@ -9,13 +9,14 @@ export default class Cars extends React.Component {
         this.state = {
            message: "I am the car class",
            buttonTitle: "ON",
-           buttonClicks: 0
+           buttonClicks: 0,
+           data: ["car1", "car2", "car3", "car4", "car5","car6"]
         }
     }
 
     // js logic
-    doSomething = () => {
-        this.setState({message: "Button Clicked"})
+    doSomething = (car) => {
+        console.log("Car clicked: ", car)
     }
 
     toggle = () => {
@@ -39,6 +40,22 @@ export default class Cars extends React.Component {
                 {/* <Button title="Click Me!" onPress={this.doSomething}></Button> */}
                 <Button title={this.state.buttonTitle} onPress={this.toggle}></Button>
                 <Text>This button has been clicked {this.state.buttonClicks} times</Text>
+                
+                <ScrollView 
+                    style={{maxHeight: "50%", padding: 15, margin: 10}}
+                    showsVerticalScrollIndicator={true}
+                    >
+                {this.state.data.map((car) => 
+                    <Pressable 
+                        key={car} 
+                        style={styles.pressable}
+                        onPress={() => this.doSomething(car)}
+                        >
+                        <Text style={{color:"white"}}>{car}</Text>
+                    </Pressable>
+                )}
+                </ScrollView>
+
             </View>
         )
     }
@@ -58,4 +75,13 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'start',
     },
+    pressable:{
+        backgroundColor: "#243783",
+        borderRadius: 3,
+        margin: 3,
+        minWidth: 150,
+        minHeight: 45,
+        justifyContent: "center",
+        padding: 5
+    }
 })
