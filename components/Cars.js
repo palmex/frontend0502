@@ -30,6 +30,10 @@ export default class Cars extends React.Component {
         console.log("Car clicked: ", car)
     }
 
+    submitCar = () =>{
+        console.log(this.state.make,this.state.model, this.state.year, this.state.odometer )
+    }
+
     toggle = () => {
         this.setState({buttonClicks: this.state.buttonClicks + 1})
         if (this.state.buttonTitle == "ON"){
@@ -44,11 +48,11 @@ export default class Cars extends React.Component {
     
     // render
     render(){
-        console.log(this.state.make)
+        // console.log(this.state.make)
         return(
             <View style={styles.container}>
                 <Text>{this.props.title}</Text>
-                <ScrollView 
+                {/* <ScrollView 
                     style={{maxHeight: "50%", padding: 15, margin: 10}}
                     showsVerticalScrollIndicator={true}
                     >
@@ -61,7 +65,7 @@ export default class Cars extends React.Component {
                         <Text style={{color:"white"}}>{car.make}</Text>
                     </Pressable>
                 )}
-                </ScrollView>
+                </ScrollView> */}
                 <Text style={{fontSize:20, color: "#887444"}}>
                     Car Form
                 </Text>
@@ -71,6 +75,25 @@ export default class Cars extends React.Component {
                         style={styles.formInput}
                         onChangeText={(e)=>this.setState({make: e})}
                     />
+                    <Text style={styles.formText}>Model</Text>
+                    <TextInput 
+                        style={styles.formInput}
+                        onChangeText={(e)=>this.setState({model: e})}
+                    />
+                    <Text style={styles.formText}>Year</Text>
+                    <TextInput 
+                        style={styles.formInput}
+                        onChangeText={(e)=>this.setState({year: e})}
+                    />
+                    <Text style={styles.formText}>Odometer</Text>
+                    <TextInput 
+                        style={styles.formInput}
+                        onChangeText={(e)=>this.setState({odometer: e})}
+                    />
+                    <Pressable style={styles.submit}
+                        onPress={this.submitCar}>
+                        <Text>Submit</Text>
+                    </Pressable>
                 </View>
             </View>
         )
@@ -127,6 +150,17 @@ const styles = StyleSheet.create({
       width: "90%",
       alignItems: 'center',
       justifyContent: 'start',
+    },
+    submit:{
+        backgroundColor: "white",
+        width: "40%",
+        height: 35,
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        padding: 5,
+        alignSelf: "center"
     },
     pressable:{
         backgroundColor: "#243783",
